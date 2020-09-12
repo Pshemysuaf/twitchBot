@@ -62,7 +62,8 @@ async def event_message(ctx):
                     "Content-type": "application/json",
                     "User-Agent": os.environ['USER_AGENT'],
                     "x-api-key": os.environ['API_KEY'],
-                }
+                },
+                verify=False
             )
             logging.info(json.dumps(data))
             stats[item_id] += 1
@@ -81,7 +82,7 @@ async def items_list(ctx):
 @bot.command(name='ranking')
 async def ranking(ctx):
     await ctx.send(
-        " :) ".join([f"{items[stat]}: {stats[stat]} pkt." for stat in stats])
+        " :) ".join([f"{items[stat]}: {stats[stat]} pkt." for stat in dict(sorted(stats.items(), key=lambda kv: kv[1], reverse=True))])
     )
 
 
